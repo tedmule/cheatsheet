@@ -1,0 +1,67 @@
+====== kubernetes|k8s
+    ------ pod
+        kubectl get pod
+
+
+====== helm|chart
+    helm repo add stable http://mirror.azure.cn/kubernetes/charts/
+    helm repo list
+    
+    helm search repo <keyword>
+    helm search repo <keyword> -l
+    helm search hub redis
+    
+    helm get manifest <release name>
+    
+    helm install stable/mysql --generate-name
+    helm uninstall mysql-xxxxxx
+    
+    helm status
+    
+    helm show values stable/redis-ha > redis-config.yaml
+    # modify redis-config.yaml
+    helm install -f redis-config.yaml redis-ha stable/redis-ha -n test
+    helm upgrade -f redis-config.yaml <release name> <chart name> -n <namespace>
+    helm upgrade cilium cilium/cilium --version 1.11.6 -f values.yaml -n kube-system
+    
+    helm uninstall redis-ha
+    
+    # Get current release values
+    helm -n <namespace> get values <deployed release name> > values.yaml
+    
+    helm list -n pg-ha
+    NAME          NAMESPACE    REVISION    UPDATED                                    STATUS      CHART                   APP VERSION
+    postgre-ha    pg-ha        1           2024-02-07 12:35:39.059224538 +0800 CST    deployed    postgresql-ha-13.1.1    16.1.0
+    
+    helm -n pg-ha upgrade  -f values.yaml postgre-ha bitnami/postgresql-ha --version 13.1.1
+    
+    
+    helm history <release name>
+    helm rollback <release name> <revision>
+    
+    
+    helm search repo loki --versions
+    helm pull bitnami/nginx --version 9.3.1
+    helm pull grafana/loki --version 6.7.3
+    
+    # upload helm chart to repo(chartmuseum)
+    curl --data-binary "@promtail-6.16.4.tgz" http://10.254.4.200:8080/api/charts
+
+    --- chart
+
+====== ipvs|ipvsadm
+    # show ipvs timeout
+    ipvsadm -l --timeout
+    
+    # change ipvs timeout
+    ipvsadm --set 3600 120 300
+    
+    # delete ipvs real server
+    ipvsadm -d -t 10.66.0.1:443 -r 10.254.4.100:6443
+
+
+====== conntrack
+    conntrack -L
+    
+    # show max number of connection track
+    cat /proc/sys/net/nf_conntrack_max
