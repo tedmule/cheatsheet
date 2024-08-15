@@ -1,9 +1,14 @@
-====== kubernetes|k8s
-    ------ pod
+≡≡≡≡≡≡ kubernetes|k8s
+    ====== pod
         kubectl get pod
+    ====== pvc|pv
+        # patch terminating pv(to delete)
+        for pv in $(k get pv | grep loki | awk '{print $1}');do kubectl patch pv $pv -p '{"metadata":{"finalizers":[]}}' --type=merge;done
+        
 
 
-====== helm|chart
+
+≡≡≡≡≡≡ helm|chart
     helm repo add stable http://mirror.azure.cn/kubernetes/charts/
     helm repo list
     
@@ -41,6 +46,7 @@
     
     
     helm search repo loki --versions
+    # 拉取指定版本tgz到本地
     helm pull bitnami/nginx --version 9.3.1
     helm pull grafana/loki --version 6.7.3
     
@@ -49,7 +55,7 @@
 
     --- chart
 
-====== ipvs|ipvsadm
+≡≡≡≡≡≡ ipvs|ipvsadm
     # show ipvs timeout
     ipvsadm -l --timeout
     
@@ -60,8 +66,13 @@
     ipvsadm -d -t 10.66.0.1:443 -r 10.254.4.100:6443
 
 
-====== conntrack
+≡≡≡≡≡≡ conntrack
     conntrack -L
     
     # show max number of connection track
     cat /proc/sys/net/nf_conntrack_max
+
+≡≡≡≡≡≡ namespace|ns
+    lsns -t net
+
+
