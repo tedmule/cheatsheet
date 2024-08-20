@@ -76,3 +76,7 @@
     lsns -t net
 
 
+≡≡≡≡≡≡ git
+    ====== tag
+    # Show commit id by tag
+    git rev-list -n 1 <tag name>
