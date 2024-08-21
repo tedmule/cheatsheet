@@ -76,7 +76,32 @@
     lsns -t net
 
 
+
 ≡≡≡≡≡≡ git
     ====== tag
-    # Show commit id by tag
+    # show commit id by tag
     git rev-list -n 1 <tag name>
+
+
+
+≡≡≡≡≡≡ node|nodejs
+    ====== yarn
+    # clean cache
+    yarn cache clean
+
+    yarn config get registry
+    yarn config set registry https://registry.npmmirror.com
+    # 恢复官方默认源
+    yarn config set registry https://registry.yarnpkg.com
+    # 删除源
+    yarn config delete registry
+
+    ====== npm
+    npm config get registry
+    npm config set registry https://registry.npmmirror.com
+    # 恢复官方默认源
+    npm config set registry https://registry.npmjs.org
+    # 删除源
+    npm config delete registry
+    # 临时使用
+    npm --registry https://registry.npmmirror.com install XXX
