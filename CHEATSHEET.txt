@@ -85,6 +85,9 @@
 
 
 ≡≡≡≡≡≡ node|nodejs
+    # 默认使用ipv4
+    export NODE_OPTIONS="--dns-result-order=ipv4first"
+
     ====== yarn
     # clean cache
     yarn cache clean
