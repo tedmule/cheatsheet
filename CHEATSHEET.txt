@@ -2,10 +2,16 @@
     ====== pod
         kubectl get pod
     ====== pvc|pv
-        # patch terminating pv(to delete)
-        for pv in $(k get pv | grep loki | awk '{print $1}');do kubectl patch pv $pv -p '{"metadata":{"finalizers":[]}}' --type=merge;done
-        
+        # delete 'Released' pv
+        for pv in $(kubectl get pv | grep Released | awk '{print $1}');do kubectl delete pv $pv --timeout=3s;done
 
+        # patch terminating pv(to delete)
+        for pv in $(k get pv | grep Terminating | awk '{print $1}');do kubectl patch pv $pv -p '{"metadata":{"finalizers":[]}}' --type=merge;done
+
+    ====== init|chown
+        # init command
+        chown,-R,472:472,/var/lib/grafana
+        
 
 
 ≡≡≡≡≡≡ helm|chart
@@ -55,6 +61,7 @@
 
     --- chart
 
+
 ≡≡≡≡≡≡ ipvs|ipvsadm
     # show ipvs timeout
     ipvsadm -l --timeout
@@ -71,6 +78,7 @@
     
     # show max number of connection track
     cat /proc/sys/net/nf_conntrack_max
+
 
 ≡≡≡≡≡≡ namespace|ns
     lsns -t net
@@ -108,3 +116,18 @@
     npm config delete registry
     # 临时使用
     npm --registry https://registry.npmmirror.com install XXX
+
+
+
+≡≡≡≡≡≡ jks|keystore
+    ====== keytool
+        # list
+        keytool -list -keystore cert.jks
+        keytool -v -list -keystore cert.jks
+        keytool -list -keystore cert.jks -alias "alias name"
+
+        # 提取公钥
+        keytool -export -alias your_alias -keystore your_keystore.jks -file public_key.crt
+
+        # Change keystore password
+        keytool -storepasswd -keystore cert.jks
