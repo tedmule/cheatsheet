@@ -1,6 +1,15 @@
 ≡≡≡≡≡≡ kubernetes|k8s
+    ====== cluster|status|state
+        # check cluster status(new method)
+        curl -k https://localhost:6443/livez?verbose
+
+    ====== kubectl|replace
+        # force replace a resource that are unable to update
+        kubectl replace -f storageclass-retain.yaml --force
+
     ====== pod
         kubectl get pod
+
     ====== pvc|pv
         # delete 'Released' pv
         for pv in $(kubectl get pv | grep Released | awk '{print $1}');do kubectl delete pv $pv --timeout=3s;done
@@ -8,11 +17,64 @@
         # patch terminating pv(to delete)
         for pv in $(k get pv | grep Terminating | awk '{print $1}');do kubectl patch pv $pv -p '{"metadata":{"finalizers":[]}}' --type=merge;done
 
+    ====== secret|registry
+        kubectl create secret docker-registry regcred --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
+        
     ====== init|chown
         # init command
         chown,-R,472:472,/var/lib/grafana
+    ====== log|logs
+        # Return snapshot logs from pod nginx with multi containers
+        kubectl logs nginx --all-containers=true
         
+        # Return snapshot logs from all containers in pods defined by label app=nginx
+        kubectl logs -l app=nginx --all-containers=true
+        
+        # Return snapshot of previous terminated ruby container logs from pod web-1
+        kubectl logs -p -c ruby web-1
+        
+        # Begin streaming the logs of the ruby container in pod web-1
+        kubectl logs -f -c ruby web-1
+        
+        # Begin streaming the logs from all containers in pods defined by label app=nginx
+        kubectl logs -f -l app=nginx --all-containers=true
+        
+        # Display only the most recent 20 lines of output in pod nginx
+        kubectl logs --tail=20 nginx
+        
+        # Show all logs from pod nginx written in the last hour
+        kubectl logs --since=1h nginx
+        
+        # Show logs from a kubelet with an expired serving certificate
+        kubectl logs --insecure-skip-tls-verify-backend nginx
+        
+        # Return snapshot logs from first container of a job named hello
+        kubectl logs job/hello
+        
+        # Return snapshot logs from container nginx-1 of a deployment named nginx
+        kubectl logs deployment/nginx -c nginx-1
 
+
+
+≡≡≡≡≡≡ etcd|etcdctl
+    etcdctl --user root:P@ssw0rd --endpoints=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379 endpoint health
+    etcdctl --user root:P@ssw0rd --endpoints=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379 endpoint status -w table
+    etcdctl --user root:P@ssw0rd --endpoints=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379 get / --prefix --keys-only
+    export ENDPOINTS=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379
+
+    # take snapshot
+    ETCDCTL_API=3 etcdctl --user root:P@ssw0rd --endpoints http://10.1.108.81:2379 save snapshot.db
+
+    # check snapshot status
+    etcdctl snapshot status snapshot.db -w table
+
+    # check revision
+    etcdctl --user root:P@ssw0rd --endpoints $ENDPOINTS endpoint status --write-out="json"
+
+    # disable authentication
+    etcdctl --user root:P@ssw0rd --endpoints=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379 auth disable
+
+    
 
 ≡≡≡≡≡≡ helm|chart
     helm repo add stable http://mirror.azure.cn/kubernetes/charts/
@@ -90,6 +152,17 @@
     # show commit id by tag
     git rev-list -n 1 <tag name>
 
+    # delete remote tag
+    git push origin tag <tag name> --delete
+
+    ====== branch
+    # push local branch to remote
+    git push -u origin <branch name>
+
+    ====== track file
+    git log -p -- <filename>
+    git show <revision> -- <filename>
+
 
 
 ≡≡≡≡≡≡ node|nodejs
@@ -131,3 +204,55 @@
 
         # Change keystore password
         keytool -storepasswd -keystore cert.jks
+
+
+
+≡≡≡≡≡≡ ca|openssl
+    ====== openssl
+        # list root certificates
+        awk -v cmd='openssl x509 -noout -subject' '
+            /BEGIN/{close(cmd)};{print | cmd}' < /etc/ssl/certs/ca-certificates.crt
+
+        # verify certificate with root CA
+        openssl verify -CAfile ca.crt 192.168.6.99.crt
+
+        # or verify cert signed by intermediate CA
+        cat intermediate.pem rootCA.pem > chain.pem
+        openssl verify -CAfile chain.pem cert.pem
+
+        # 查看HTTPS证书内容
+        openssl s_client -showcerts -connect host:443
+        openssl s_client -showcerts -connect www.example.com:443 </dev/null
+        openssl s_client -showcerts -servername www.example.com -connect www.example.com:443 </dev/null
+
+        # show san in certificate
+        openssl x509 -noout -ext subjectAltName -in servert.crt
+
+
+≡≡≡≡≡≡ redis
+    ====== redis-cli
+        # check redis cluster status
+        cluster info
+
+
+≡≡≡≡≡≡ kafka
+    # generate cluster id 
+    cat /proc/sys/kernel/random/uuid | tr -d '-' | base64 | cut -b 1-22
+
+    # show cluster status
+
+≡≡≡≡≡≡ kafka
+    # check calico work mode
+    calicoctl get ippool -o yaml
+
+
+
+≡≡≡≡≡≡ grep
+    # search ipv4 text and count
+    grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' ips.txt | sort | uniq -c
+
+
+
+≡≡≡≡≡≡ ps
+    # show full user name with 20 chars
+    ps axo user:20,pid,pcpu,pmem,vsz,rss,tty,stat,start,time,comm
