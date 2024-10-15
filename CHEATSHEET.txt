@@ -1,3 +1,9 @@
+≡≡≡≡≡≡ docker|compose
+    ====== inspect
+    # show container ip
+    docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container
+
+
 ≡≡≡≡≡≡ kubernetes|k8s
     ====== cluster|status|state
         # check cluster status(new method)
@@ -73,6 +79,9 @@
 
     # disable authentication
     etcdctl --user root:P@ssw0rd --endpoints=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379 auth disable
+
+    # connect to remote etcd
+    etcdctl --user=root:P@ssw0rd --endpoints=192.168.6.144:30666 user list
 
     
 
@@ -163,6 +172,9 @@
     git log -p -- <filename>
     git show <revision> -- <filename>
 
+    ====== show common ancestor
+    git merge-base branch2 branch3
+
 
 
 ≡≡≡≡≡≡ node|nodejs
@@ -204,7 +216,6 @@
 
         # Change keystore password
         keytool -storepasswd -keystore cert.jks
-
 
 
 ≡≡≡≡≡≡ ca|openssl
