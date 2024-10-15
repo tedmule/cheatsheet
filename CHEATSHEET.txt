@@ -267,3 +267,34 @@
 ≡≡≡≡≡≡ ps
     # show full user name with 20 chars
     ps axo user:20,pid,pcpu,pmem,vsz,rss,tty,stat,start,time,comm
+
+
+
+≡≡≡≡≡≡ ipvsadm
+    # list ipvs info
+    ipvsadm -L -n
+
+    # add a virtual server
+    ipvsadm -A -t 192.168.0.100:80 -s rr
+
+    # delete a virtual server
+    ipvsadm -D -t 192.168.0.100:80
+
+    # add a real server to virtual server
+    ipvsadm -a -t 192.168.0.100:80 -r 192.168.0.101:80 -m
+    
+    # delete a real server from virtual server
+    ipvsadm -d -t 192.168.0.100:80 -r 192.168.0.101:80
+
+    # clean
+    ipvsadm -C
+    
+    # backup and restore
+    ipvsadm -S > /path/to/ipvs_backup.conf
+    ipvsadm -L --stats
+    
+    # set timeout(tcp, tcpfin, udp)
+    ipvsadm --set 30 500 60
+
+
+
