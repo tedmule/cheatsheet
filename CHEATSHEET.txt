@@ -286,6 +286,9 @@
     # delete a real server from virtual server
     ipvsadm -d -t 192.168.0.100:80 -r 192.168.0.101:80
 
+    # update a real server's weight
+    ipvsadm -e -t 192.168.0.100:80 -r 192.168.0.101:80 -m -w 6
+
     # clean
     ipvsadm -C
     
@@ -295,6 +298,10 @@
     
     # set timeout(tcp, tcpfin, udp)
     ipvsadm --set 30 500 60
+
+    # list current timeout
+    ipvsadm -l --timeout
+
 
 
 
