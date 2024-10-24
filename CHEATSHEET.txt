@@ -294,6 +294,9 @@
     
     # backup and restore
     ipvsadm -S > /path/to/ipvs_backup.conf
+    ipvsadm -R > /path/to/ipvs_backup.conf
+
+    # check status
     ipvsadm -L --stats
     
     # set timeout(tcp, tcpfin, udp)
@@ -302,6 +305,14 @@
     # list current timeout
     ipvsadm -l --timeout
 
+
+
+
+≡≡≡≡≡≡ kvm|virsh
+    ====== virsh
+    # force shutdown a domain
+    virsh shutdown <domain id>
+    virsh shutdown <domain name>
 
 
 
