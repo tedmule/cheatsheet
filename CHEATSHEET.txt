@@ -1,3 +1,18 @@
+≡≡≡≡≡≡ linux
+    ====== lvm|scsi
+    # scan new disk
+    ls /sys/class/scsi_host/ | while read host ; do echo "- - -" > /sys/class/scsi_host/$host/scan ; done
+
+    # extend all vg space to lv
+    lvextend -l +100%FREE full-lv-path
+
+    # resize ext filesystem
+    resize2fs full-lv-path
+
+    # resize xfs filesystem
+    xfs_growfs mount-point
+
+
 ≡≡≡≡≡≡ docker|compose
     ====== inspect
     # show container ip
@@ -168,6 +183,13 @@
     # push local branch to remote
     git push -u origin <branch name>
 
+    git checkut -b test origin/test
+    git checkout -b NEW_BRANCH_NAME COMMIT_ID
+
+    # delete remote branch
+    git push origin :branchname
+    git push origin branchname --delete
+
     ====== track file
     git log -p -- <filename>
     git show <revision> -- <filename>
@@ -234,11 +256,18 @@
         # 查看HTTPS证书内容
         openssl s_client -showcerts -connect host:443
         openssl s_client -showcerts -connect www.example.com:443 </dev/null
-        openssl s_client -showcerts -servername www.example.com -connect www.example.com:443 </dev/null
+        openssl s_client -showcerts -servername www.example.com -connect <ip>:443 </dev/null
+
+        # check tls versions
+        openssl s_client -tls1_1 -connect www.ted.mule:443 -servername www.hexinpass.com </dev/null
+        openssl s_client -tls1_2 -connect www.ted.mule:443 -servername www.hexinpass.com </dev/null
+        openssl s_client -tls1_3 -connect www.ted.mule:443 -servername www.hexinpass.com </dev/null
 
         # show san in certificate
         openssl x509 -noout -ext subjectAltName -in servert.crt
 
+        # check https with curl(no need to add hosts)
+        curl  --resolve www.ted.mule:443:<ip> https://www.ted.mule
 
 ≡≡≡≡≡≡ redis
     ====== redis-cli
@@ -315,4 +344,18 @@
     virsh shutdown <domain name>
 
 
+
+≡≡≡≡≡≡ nginx|haproxy
+    ====== haproxy
+    # check syntax
+    haproxy -f /path/to/haproxy.cfg -c
+
+    # reload 
+
+
+
+≡≡≡≡≡≡ tcpdump|wireshark
+    ====== wireshark
+    # filter tls client hello
+    tls.handshake.type==1
 
