@@ -197,6 +197,10 @@
     ====== show common ancestor
     git merge-base branch2 branch3
 
+    ====== show related filenames of commit
+    git diff-tree --no-commit-id --name-only bd61ad98 -r
+    git show --pretty="" --name-only bd61ad98
+
 
 
 ≡≡≡≡≡≡ node|nodejs
