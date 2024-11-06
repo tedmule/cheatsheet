@@ -201,6 +201,12 @@
     git diff-tree --no-commit-id --name-only bd61ad98 -r
     git show --pretty="" --name-only bd61ad98
 
+    ====== merge/rebase
+    git checkout master 
+    git pull origin master
+    git merge/rebase feature
+    git push origin master
+
 
 
 ≡≡≡≡≡≡ node|nodejs
