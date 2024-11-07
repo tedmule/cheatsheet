@@ -13,10 +13,18 @@
     xfs_growfs mount-point
 
 
+
+
+
+
 ≡≡≡≡≡≡ docker|compose
     ====== inspect
     # show container ip
     docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container
+
+
+
+
 
 
 ≡≡≡≡≡≡ kubernetes|k8s
@@ -77,6 +85,9 @@
 
 
 
+
+
+
 ≡≡≡≡≡≡ etcd|etcdctl
     etcdctl --user root:P@ssw0rd --endpoints=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379 endpoint health
     etcdctl --user root:P@ssw0rd --endpoints=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379 endpoint status -w table
@@ -98,7 +109,10 @@
     # connect to remote etcd
     etcdctl --user=root:P@ssw0rd --endpoints=192.168.6.144:30666 user list
 
-    
+
+
+
+
 
 ≡≡≡≡≡≡ helm|chart
     helm repo add stable http://mirror.azure.cn/kubernetes/charts/
@@ -148,6 +162,10 @@
     --- chart
 
 
+
+
+
+
 ≡≡≡≡≡≡ ipvs|ipvsadm
     # show ipvs timeout
     ipvsadm -l --timeout
@@ -159,6 +177,10 @@
     ipvsadm -d -t 10.66.0.1:443 -r 10.254.4.100:6443
 
 
+
+
+
+
 ≡≡≡≡≡≡ conntrack
     conntrack -L
     
@@ -166,8 +188,15 @@
     cat /proc/sys/net/nf_conntrack_max
 
 
+
+
+
+
 ≡≡≡≡≡≡ namespace|ns
     lsns -t net
+
+
+
 
 
 
@@ -209,6 +238,9 @@
 
 
 
+
+
+
 ≡≡≡≡≡≡ node|nodejs
     # 默认使用ipv4
     export NODE_OPTIONS="--dns-result-order=ipv4first"
@@ -236,6 +268,9 @@
 
 
 
+
+
+
 ≡≡≡≡≡≡ jks|keystore
     ====== keytool
         # list
@@ -248,6 +283,10 @@
 
         # Change keystore password
         keytool -storepasswd -keystore cert.jks
+
+
+
+
 
 
 ≡≡≡≡≡≡ ca|openssl
@@ -283,10 +322,19 @@
         openssl x509 -noout -modulus -in certificate.crt | openssl md5
         openssl rsa -noout -modulus -in private.key | openssl md5
 
+
+
+
+
+
 ≡≡≡≡≡≡ redis
     ====== redis-cli
         # check redis cluster status
         cluster info
+
+
+
+
 
 
 ≡≡≡≡≡≡ kafka
@@ -295,9 +343,17 @@
 
     # show cluster status
 
-≡≡≡≡≡≡ kafka
+
+
+
+
+
+≡≡≡≡≡ calico
     # check calico work mode
     calicoctl get ippool -o yaml
+
+
+
 
 
 
@@ -307,9 +363,15 @@
 
 
 
+
+
+
 ≡≡≡≡≡≡ ps
     # show full user name with 20 chars
     ps axo user:20,pid,pcpu,pmem,vsz,rss,tty,stat,start,time,comm
+
+
+
 
 
 
@@ -351,11 +413,16 @@
 
 
 
+
+
 ≡≡≡≡≡≡ kvm|virsh
     ====== virsh
     # force shutdown a domain
     virsh shutdown <domain id>
     virsh shutdown <domain name>
+
+
+
 
 
 
@@ -365,6 +432,9 @@
     haproxy -f /path/to/haproxy.cfg -c
 
     # reload 
+
+
+
 
 
 
