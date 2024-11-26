@@ -13,14 +13,21 @@
     xfs_growfs mount-point
 
 
+    ====== curl
+    # get status_code
+    curl -s -o /dev/null -w "%{http_code}" http://www.example.org/
+
+
 
 
 
 
 ≡≡≡≡≡≡ docker|compose
-    ====== inspect
     # show container ip
     docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container
+
+    # remove all exited container
+    docker ps -f status=exited -q | xargs docker rm
 
 
 
@@ -31,10 +38,20 @@
     ====== cluster|status|state
         # check cluster status(new method)
         curl -k https://localhost:6443/livez?verbose
+        kubectl get --raw='/readyz?verbose'
+
+        # get cidr for pod and service
+        kubectl cluster-info dump | grep -m 1 service-cluster-ip-range
+        kubectl cluster-info dump | grep -m 1 cluster-cidr
+
+        # or use command below unless the commands above not working
+        kubectl get node -o jsonpath='{.items[*].spec.podCIDR}'
+        echo '{"apiVersion":"v1","kind":"Service","metadata":{"name":"tst"},"spec":{"clusterIP":"1.1.1.1","ports":[{"port":443}]}}' | kubectl apply -f - 2>&1 | sed 's/.*valid IPs is //'
 
     ====== kubectl|replace
         # force replace a resource that are unable to update
         kubectl replace -f storageclass-retain.yaml --force
+
 
     ====== pod
         kubectl get pod
@@ -52,6 +69,7 @@
     ====== init|chown
         # init command
         chown,-R,472:472,/var/lib/grafana
+
     ====== log|logs
         # Return snapshot logs from pod nginx with multi containers
         kubectl logs nginx --all-containers=true
@@ -95,7 +113,7 @@
     export ENDPOINTS=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379
 
     # take snapshot
-    ETCDCTL_API=3 etcdctl --user root:P@ssw0rd --endpoints http://10.1.108.81:2379 save snapshot.db
+    ETCDCTL_API=3 etcdctl --user root:P@ssw0rd --endpoints http://localhost:2379 snapshot save snapshot.db
 
     # check snapshot status
     etcdctl snapshot status snapshot.db -w table
@@ -313,7 +331,7 @@
         openssl s_client -tls1_3 -connect www.ted.mule:443 -servername www.hexinpass.com </dev/null
 
         # show san in certificate
-        openssl x509 -noout -ext subjectAltName -in servert.crt
+        openssl x509 -noout -ext subjectAltName -in server.crt
 
         # check https with curl(no need to add hosts)
         curl  --resolve www.ted.mule:443:<ip> https://www.ted.mule
@@ -420,6 +438,7 @@
     # force shutdown a domain
     virsh shutdown <domain id>
     virsh shutdown <domain name>
+    virsh destroy {domain-id, domain-name or domain-uuid} [--graceful]
 
 
 
