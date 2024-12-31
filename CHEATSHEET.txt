@@ -1,3 +1,14 @@
+≡≡≡≡≡≡ loki
+    ====== logql
+    sum(bytes_over_time({app="app-name",host=~"^cowa-iofxw.*"} [$__interval]))
+
+
+    === delete log by label
+    curl -g -u "username:password" -X POST -H 'X-Scope-OrgID: techcenter''http://127.0.0.1:3100/loki/api/v1/delete?query={foo="bar"}&start=1591616227&end=1591619692' 
+
+
+
+
 ≡≡≡≡≡≡ linux
     ====== lvm|scsi
     # scan new disk
@@ -16,6 +27,9 @@
     ====== curl
     # get status_code
     curl -s -o /dev/null -w "%{http_code}" http://www.example.org/
+
+    # simulate SNI
+    curl --resolve fruit.ted.mule:8443:192.168.2.91 https://fruit.ted.mule:8443
 
 
 
@@ -101,6 +115,14 @@
         # Return snapshot logs from container nginx-1 of a deployment named nginx
         kubectl logs deployment/nginx -c nginx-1
 
+    ====== sc|storageclass
+        # remove default storageclass
+        kubectl patch storageclass <storageclass name> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+        
+        # set default storageclass
+        kubectl patch storageclass gold -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+
+
 
 
 
@@ -177,7 +199,6 @@
     # upload helm chart to repo(chartmuseum)
     curl --data-binary "@promtail-6.16.4.tgz" http://10.254.4.200:8080/api/charts
 
-    --- chart
 
 
 
@@ -218,7 +239,7 @@
 
 
 
-≡≡≡≡≡≡ git
+≡≡≡≡≡≡ gexport NODE_OPTIONS="--dns-result-order=ipv4first"it
     ====== tag
     # show commit id by tag
     git rev-list -n 1 <tag name>
@@ -254,6 +275,9 @@
     git merge/rebase feature
     git push origin master
 
+    ====== show branch track
+    git branch -vv
+
 
 
 
@@ -262,6 +286,8 @@
 ≡≡≡≡≡≡ node|nodejs
     # 默认使用ipv4
     export NODE_OPTIONS="--dns-result-order=ipv4first"
+    # use legacy ssl
+    export NODE_OPTIONS=--openssl-legacy-provider
 
     ====== yarn
     # clean cache
@@ -349,6 +375,7 @@
     ====== redis-cli
         # check redis cluster status
         cluster info
+        cluster nodes
 
 
 
