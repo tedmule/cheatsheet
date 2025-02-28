@@ -1,3 +1,31 @@
+≡≡≡≡≡≡ windows|md5
+    # check md5
+    CertUtil -hashfile <filename> MD5
+
+
+
+≡≡≡≡≡≡ rsync
+    # use rsync through ssh
+    rsync -chavzP --stats user@remote.host:/path/to/copy /path/to/local/storage
+    rsync -chavzP -e "ssh -p $portNumber" user@remote.host:/path/to/copy /local/path
+
+    # copy "folder" to "/path/to/upload/folder"
+    rsync -chavzP -e "ssh -p 2222" /local/folder user@remote.host:/path/to/upload/
+
+
+
+≡≡≡≡≡≡ chrome|chromium
+    # print webpage to pdf
+    chromium --no-sandbox --headless --disable-gpu --print-to-pdf
+
+
+
+≡≡≡≡≡≡ ldap
+    ldapsearch -x -H ldap:/// -D "cn=admin,dc=ted,dc=mule" -w admin -b 'ou=Users,domainName=ted.mule,o=domains,dc=ted,dc=mule' "(&(uid=ted))"
+    ldapsearch -x -H ldap:/// -D "cn=admin,dc=ted,dc=mule" -W -b 'ou=Users,domainName=ted.mule,o=domains,dc=ted,dc=mule' "(&(uid=ted))"
+
+
+
 ≡≡≡≡≡≡ loki
     ====== logql
     sum(bytes_over_time({app="app-name",host=~"^cowa-iofxw.*"} [$__interval]))
@@ -239,7 +267,7 @@
 
 
 
-≡≡≡≡≡≡ gexport NODE_OPTIONS="--dns-result-order=ipv4first"it
+≡≡≡≡≡≡ git
     ====== tag
     # show commit id by tag
     git rev-list -n 1 <tag name>
@@ -466,6 +494,13 @@
     virsh shutdown <domain id>
     virsh shutdown <domain name>
     virsh destroy {domain-id, domain-name or domain-uuid} [--graceful]
+
+    # check vm disk
+    virsh domblklist <domain name>
+    qemu-img check /opt/kvm/qcow2/kf200.qcow2
+
+    # check snapshot of qcow2 file
+    qemu-img snapshot -l /opt/kvm/qcow2/my-vm.qcow2
 
 
 
