@@ -30,6 +30,9 @@
     ====== logql
     sum(bytes_over_time({app="app-name",host=~"^cowa-iofxw.*"} [$__interval]))
 
+    # filter by regexp
+    {project="apisix", app="apisix-internet"} |~ "(?i):8809|TCP"
+
 
     === delete log by label
     curl -g -u "username:password" -X POST -H 'X-Scope-OrgID: techcenter''http://127.0.0.1:3100/loki/api/v1/delete?query={foo="bar"}&start=1591616227&end=1591619692' 
