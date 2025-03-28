@@ -24,6 +24,9 @@
     ldapsearch -x -H ldap:/// -D "cn=admin,dc=ted,dc=mule" -w admin -b 'ou=Users,domainName=ted.mule,o=domains,dc=ted,dc=mule' "(&(uid=ted))"
     ldapsearch -x -H ldap:/// -D "cn=admin,dc=ted,dc=mule" -W -b 'ou=Users,domainName=ted.mule,o=domains,dc=ted,dc=mule' "(&(uid=ted))"
 
+    # replication check
+    ldapsearch -x -H ldap://<provider-host> -D "cn=admin,dc=example,dc=com" -W -b "dc=example,dc=com" "(objectClass=*)" contextCSN
+
 
 
 ≡≡≡≡≡≡ loki
