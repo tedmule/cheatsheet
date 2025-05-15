@@ -1,3 +1,11 @@
+≡≡≡≡≡≡ snmp
+    # snampwalk
+    snmpwalk -v2c -c "stsy202501" 10.254.2.100 1.3.6.1.2.1.1.5.0
+
+
+
+
+
 ≡≡≡≡≡≡ ps
     # list time-related info for process
     ps -eo pid,comm,lstart,etime,time,args
@@ -32,6 +40,10 @@
 
     # replication check
     ldapsearch -x -H ldap://<provider-host> -D "cn=admin,dc=example,dc=com" -W -b "dc=example,dc=com" "(objectClass=*)" contextCSN
+
+    # user bind test
+    ldapwhoami -vvv -x -H ldap://192.168.1.1:389 -D <binddn> -W
+    ldapwhoami -vvv -x -H ldap://192.168.1.1:389 -D <binddn> -w <bind password>
 
 
 
