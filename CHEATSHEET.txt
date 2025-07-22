@@ -1,3 +1,19 @@
+≡≡≡≡≡≡ vim
+    # global fold
+    zM
+
+    # global unfold
+    zR
+
+    # fold under cursor
+    zC
+
+    # unfold under cursor
+    zO   #(recursive)
+    zo
+
+
+
 ≡≡≡≡≡≡ find
     # find app.conf in directory, replace filename, copy to target directory
     find . -name 'app.conf' -exec sh -c 'mkdir -p /tmp/conf; cp "$1" "/tmp/conf/$(echo "$1" | sed "s/\.\///; s/\//_/g")"' _ {} \;
@@ -106,6 +122,9 @@
 
     # remove all exited container
     docker ps -f status=exited -q | xargs docker rm
+
+    # list images of running containers
+    docker ps --format "{{.Image}}"
 
 
 
