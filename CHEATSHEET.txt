@@ -86,6 +86,9 @@
     === delete log by label
     curl -g -u "username:password" -X POST -H 'X-Scope-OrgID: techcenter''http://127.0.0.1:3100/loki/api/v1/delete?query={foo="bar"}&start=1591616227&end=1591619692' 
 
+    === curl download to support retry
+    curl -L -O --retry 5 --retry-max-time 0 -C - -x http://<proxy ip>:<proxy port> <URL>
+
 
 
 
@@ -446,6 +449,9 @@
         openssl s_client -tls1_1 -connect www.ted.mule:443 -servername www.hexinpass.com </dev/null
         openssl s_client -tls1_2 -connect www.ted.mule:443 -servername www.hexinpass.com </dev/null
         openssl s_client -tls1_3 -connect www.ted.mule:443 -servername www.hexinpass.com </dev/null
+        or
+        openssl s_client -connect ted.mule:443 -tls1
+        openssl s_client -connect ted.mule:443 -tls1_1
 
         # show san in certificate
         openssl x509 -noout -ext subjectAltName -in server.crt
@@ -593,6 +599,11 @@
     ====== wireshark
     # filter tls client hello
     tls.handshake.type==1
+
+    
+    ====== tcpdump
+    # show sni info in tcpdump command
+    tcpdump -i ens160 -nn -s 1500 "host 162.14.91.140 and tcp port 443 and (tcp[((tcp[12] & 0xf0) >> 2)] = 0x16) and (tcp[((tcp[12] & 0xf0) >> 2)+5] = 0x01)" -A
 
 
 
