@@ -217,6 +217,7 @@
 ≡≡≡≡≡≡ etcd|etcdctl
     etcdctl --user root:P@ssw0rd --endpoints=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379 endpoint health
     etcdctl --user root:P@ssw0rd --endpoints=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379 endpoint status -w table
+    etcdctl --user root:P@ssw0rd --endpoints=http://etcd-0:2379,http://etcd-1:2379,http://etcd-2:2379 endpoint status -w table
     etcdctl --user root:P@ssw0rd --endpoints=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379 get / --prefix --keys-only
     export ENDPOINTS=http://etcd-0.etcd-headless:2379,http://etcd-1.etcd-headless:2379,http://etcd-2.etcd-headless:2379
 
