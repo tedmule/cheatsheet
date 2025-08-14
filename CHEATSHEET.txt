@@ -445,6 +445,10 @@
         # 查看证书过期时间
         openssl x509 -in ted.mule.crt -noout -dates
 
+        # 查看证书信息
+        openssl x509 -in ted.mule.crt -noout -subject
+        openssl x509 -in ted.mule.crt -noout -issuer
+
 
         # check tls versions
         openssl s_client -tls1_1 -connect www.ted.mule:443 -servername www.hexinpass.com </dev/null
