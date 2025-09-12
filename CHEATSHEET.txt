@@ -1,3 +1,9 @@
+≡≡≡≡≡≡ ss
+    # show connection status
+    ss -s
+
+
+
 ≡≡≡≡≡≡ vim
     # global fold
     zM
@@ -32,6 +38,7 @@
     firewall-cmd --zone=public --add-port=2049/tcp --permanent
     firewall-cmd --zone=public --add-port=111/tcp --permanent
     firewall-cmd --zone=public --add-port=20048/tcp --permanent
+    firewall-cmd --zone=public --add-port=69/udp --permanent
 
 
 ≡≡≡≡≡≡ ps
