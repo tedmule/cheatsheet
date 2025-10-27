@@ -85,6 +85,7 @@
 ≡≡≡≡≡≡ loki
     ====== logql
     sum(bytes_over_time({app="app-name",host=~"^cowa-iofxw.*"} [$__interval]))
+    sum by (ip) ( count_over_time( {job="your_job_label_here"} | regexp `^(?P<ip>\S+)` [1h]))
 
     # filter by regexp
     {project="apisix", app="apisix-internet"} |~ "(?i):8809|TCP"
@@ -141,7 +142,7 @@
 
 
 
-≡≡≡≡≡≡ kubernetes|k8s
+≡≡≡≡≡≡ kubernetes|k8s|kubeadm
     ====== cluster|status|state
         # check cluster status(new method)
         curl -k https://localhost:6443/livez?verbose
@@ -214,6 +215,15 @@
         
         # set default storageclass
         kubectl patch storageclass gold -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+
+    ====== cert|kubeadm
+        # check cluster cert expiration
+        kubeadm certs check-expiration
+
+        # renew cert
+        kubeadm certs renew all
+        systemctl restart kubelet
+
 
 
 
