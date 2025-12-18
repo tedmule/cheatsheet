@@ -1,3 +1,7 @@
+≡≡≡≡≡≡ sed
+    # delete space in the beginning of text
+    echo "    hello world " | sed 's/^[ \t]*//'
+
 ≡≡≡≡≡≡ ss
     # show connection status
     ss -s
@@ -23,6 +27,10 @@
 ≡≡≡≡≡≡ find
     # find app.conf in directory, replace filename, copy to target directory
     find . -name 'app.conf' -exec sh -c 'mkdir -p /tmp/conf; cp "$1" "/tmp/conf/$(echo "$1" | sed "s/\.\///; s/\//_/g")"' _ {} \;
+
+    # find 1st directory target dir, without target dir itself
+    find /target/dir -mindepth 1 -maxdepth 1 -type d -mtime +30 | xargs -I{} rm -rf {};
+
 
 
 
@@ -208,6 +216,9 @@
         
         # Return snapshot logs from container nginx-1 of a deployment named nginx
         kubectl logs deployment/nginx -c nginx-1
+
+        # 
+        kubectl logs -l app=myapp -n default --since-time=2024-12-01T10:00:00Z --all-containers=true --prefix=true --timestamps=true | grep "^2024-12-01T0[3-5]"
 
     ====== sc|storageclass
         # remove default storageclass
@@ -485,6 +496,9 @@
         openssl x509 -noout -modulus -in certificate.crt | openssl md5
         openssl rsa -noout -modulus -in private.key | openssl md5
 
+        # 如果 .p12 文件来自 Android 或其他不兼容系统，请用 OpenSSL 或 keytool 重新生成
+        openssl pkcs12 -in android_exported.p12 -out converted.pem -nodes
+        openssl pkcs12 -export -in converted.pem -out newcert.p12 -name "mykey"
 
 
 
