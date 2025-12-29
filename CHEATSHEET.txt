@@ -641,6 +641,9 @@
     # show sni info in tcpdump command
     tcpdump -i ens160 -nn -s 1500 "host 162.14.91.140 and tcp port 443 and (tcp[((tcp[12] & 0xf0) >> 2)] = 0x16) and (tcp[((tcp[12] & 0xf0) >> 2)+5] = 0x01)" -A
 
+    # multiple logic condition
+    tcpdump -nni any '(host 125.70.228.59 and dst port 20010) or (host 10.0.102.10 and port 45001)'
+
 
 
 
