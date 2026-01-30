@@ -365,6 +365,8 @@
     ====== branch
     # push local branch to remote
     git push -u origin <branch name>
+    # track local 'dev' to remote 'master'
+    git branch -u origin/master dev
 
     git checkut -b test origin/test
     git checkout -b NEW_BRANCH_NAME COMMIT_ID
@@ -383,6 +385,7 @@
     ====== show related filenames of commit
     git diff-tree --no-commit-id --name-only bd61ad98 -r
     git show --pretty="" --name-only bd61ad98
+    git show --name-only <commit id>
 
     ====== merge/rebase
     git checkout master 
