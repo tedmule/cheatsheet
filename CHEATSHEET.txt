@@ -634,7 +634,7 @@
 
 
 
-≡≡≡≡≡≡ tcpdump|wireshark
+≡≡≡≡≡≡ tcpdump|wireshark|tshark
     ====== wireshark
     # filter tls client hello
     tls.handshake.type==1
@@ -646,6 +646,30 @@
 
     # multiple logic condition
     tcpdump -nni any '(host 125.70.228.59 and dst port 20010) or (host 10.0.102.10 and port 45001)'
+
+
+    ====== tshark
+    # 按协议统计
+    tshark -r capture.pcap -q -z io,phs
+
+    # 查看会话（源/目的、包数、字节）
+    tshark -r capture.pcap -q -z conv,tcp
+    tshark -r capture.pcap -q -z conv,ip
+    tshark -r traffic.cap -q -z conv,ip,ip.addr==192.168.6.6
+    tshark -r traffic.cap -q -z conv,tcp,ip.addr==192.168.6.6
+    tshark -r traffic.cap -q -z conv,ip,ip.src==192.168.6.6
+    tshark -r traffic.cap -q -z conv,ip,ip.dst==192.168.6.6
+
+
+    # 查看 HTTP 请求
+    tshark -r capture.pcap -Y http.request \
+      -T fields -e ip.src -e http.request.method -e http.host -e http.request.uri
+  
+    # 重定向到CSV
+    tshark -r capture.pcap -T fields -E header=y -E separator=, \
+      -e frame.time_epoch -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport -e frame.len \
+      > packets.csv
+
 
 
 
