@@ -22,6 +22,9 @@
     zO   #(recursive)
     zo
 
+    # modify on origin file
+    :set backupcopy=yes
+
 
 
 ≡≡≡≡≡≡ find
@@ -639,6 +642,11 @@
     # filter tls client hello
     tls.handshake.type==1
 
+    # filter http uri
+    http.request.uri contains "/login"
+    http.request.full_uri contains "/login"
+
+
     
     ====== tcpdump
     # show sni info in tcpdump command
@@ -678,4 +686,40 @@
 ≡≡≡≡≡≡ goaccess
     # generate html report
     goaccess access.log -a > report.html
+
+
+
+
+
+≡≡≡≡≡≡ ssl/ssh/tls
+    # login with old protocol
+    ssh -o KexAlgorithms=+diffie-hellman-group1-sha1 -o HostKeyAlgorithms=+ssh-rsa user@10.0.251.1
+
+
+
+≡≡≡≡≡≡ elk/es/elasticsearch
+    # List all indices
+    curl http://localhost:9200/_cat/indices?v
+    curl http:/localhost:9200/_cat/indices/*kafka*?v
+    # List all nodes
+    curl http://localhost:9200/_cat/nodes?v
+    # 查看群集设置
+    curl http://localhost:9200/_cluster/settings
+    # 查看heap
+    curl 'http://localhost:9200/_cat/nodes?h=heap*&v'
+    
+    # 搜索index中的文档
+    /index-name/_search?pretty=true&q=*:*&size=10       # 搜索10个文档
+    
+    # 群集状态
+    curl http://127.0.0.1:9200/_cluster/health?pretty
+    curl http://127.0.0.1:9200/_cat/master?v
+    
+    # 查看分片分配
+    curl http://localhost:9200/_cat/allocation?v
+    curl http://localhost:9200/_cat/shards?v
+    
+    # 查看count
+    GET /_count
+
 
