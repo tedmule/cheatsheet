@@ -1,6 +1,24 @@
+≡≡≡≡≡≡ kubesphere/kubekey/kk
+
+
+
+≡≡≡≡≡≡ cisco
+    ====== firewall/asa
+    # export running config(xshell)
+    terminal pager 0
+    sh run
+
+
+
+
+
+
+
 ≡≡≡≡≡≡ sed
     # delete space in the beginning of text
     echo "    hello world " | sed 's/^[ \t]*//'
+
+
 
 ≡≡≡≡≡≡ ss
     # show connection status
@@ -512,6 +530,10 @@
 
 ≡≡≡≡≡≡ redis
     ====== redis-cli
+        # connect cluster
+        redis-cli -c -h <cluster ip> -p <port> 
+        redis-cli -c -h <cluster ip> -p <port> -a <password>
+
         # check redis cluster status
         cluster info
         cluster nodes
@@ -522,10 +544,29 @@
 
 
 ≡≡≡≡≡≡ kafka
-    # generate cluster id 
-    cat /proc/sys/kernel/random/uuid | tr -d '-' | base64 | cut -b 1-22
+    ====== cluster
+        # generate cluster id 
+        cat /proc/sys/kernel/random/uuid | tr -d '-' | base64 | cut -b 1-22
 
-    # show cluster status
+    ====== brokers
+        # 进入 ZooKeeper Shell
+        bin/zookeeper-shell.sh <zookeeper-host>:2181
+
+        # 在 ZooKeeper Shell 中执行：
+        ls /brokers/ids
+        get /brokers/ids/<broker id>
+
+    ====== topics
+        # list topics
+        bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
+
+    ====== consumer group
+        # list consumer group
+        bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
+
+        # 
+
+
 
 
 
@@ -533,8 +574,30 @@
 
 
 ≡≡≡≡≡ calico
+    # check calico node status
+    calicoctl node status
+    calicoctl get nodes -o wide
+
     # check calico work mode
     calicoctl get ippool -o yaml
+
+    calicoctl ipam show
+    calicoctl ipam show --show-blocks
+    
+    # Felix health
+    kubectl get pods -n calico-system -l k8s-app=calico-node
+    kubectl logs -n calico-system -l k8s-app=calico-node -c calico-node | grep -Ei "error|warn"
+    
+    # Typha health
+    kubectl get pods -n calico-system -l k8s-app=calico-typha
+    
+    # BIRD BGP sessions
+    CALICO_NODE_POD=$(kubectl get pod -n calico-system -l k8s-app=calico-node \
+      -o jsonpath='{.items[0].metadata.name}')
+    kubectl exec -n calico-system "$CALICO_NODE_POD" -c calico-node \
+      -- birdcl show protocols
+    # 直接在calico-node pod中的calico-node容器执行
+    kubectl -n kube-system exec calico-node-qdwn5 -c calico-node -- birdcl show protocols
 
 
 
@@ -645,7 +708,6 @@
     # filter http uri
     http.request.uri contains "/login"
     http.request.full_uri contains "/login"
-
 
     
     ====== tcpdump
