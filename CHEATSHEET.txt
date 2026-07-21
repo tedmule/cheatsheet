@@ -189,6 +189,9 @@
         # force replace a resource that are unable to update
         kubectl replace -f storageclass-retain.yaml --force
 
+    ====== deployment
+        # Scale all replicas to 0 in namespace abc
+        kubectl scale deployment --all --replicas=0 -n abc
 
     ====== pod
         kubectl get pod
@@ -256,6 +259,8 @@
         kubeadm certs renew all
         systemctl restart kubelet
 
+    ====== node
+    kubectl drain <node-name> --ignore-daemonsets --delete-emptydir-data
 
 
 
@@ -780,8 +785,14 @@
     # 查看分片分配
     curl http://localhost:9200/_cat/allocation?v
     curl http://localhost:9200/_cat/shards?v
+    curl "http://127.0.0.1:9200/_cat/shards?v&s=state:desc"
     
     # 查看count
     GET /_count
 
+    # 删除索引
+    curl -XDELETE http://127.0.0.1:9200/<index>
 
+    curl -X DELETE "http://localhost:9200/myapp-*"
+    # 未分配分片原因（关键诊断）
+    GET /_cluster/allocation/explain?pretty
