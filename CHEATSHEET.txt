@@ -391,8 +391,12 @@
     ====== branch
     # push local branch to remote
     git push -u origin <branch name>
+
     # track local 'dev' to remote 'master'
     git branch -u origin/master dev
+
+    # rename branch
+    git branch -m old-branch-name new-branch-name
 
     git checkut -b test origin/test
     git checkout -b NEW_BRANCH_NAME COMMIT_ID
@@ -765,9 +769,24 @@
 
 
 ≡≡≡≡≡≡ elk/es/elasticsearch
+    ====== 索引
     # List all indices
     curl http://localhost:9200/_cat/indices?v
     curl http:/localhost:9200/_cat/indices/*kafka*?v
+
+    # 搜索index中的文档
+    /index-name/_search?pretty=true&q=*:*&size=10       # 搜索10个文档
+
+    # 查看索引
+    curl "http://localhost:9200/_cat/indices?v&h=index,pri,rep,status"
+
+    # 查看索引设置
+    curl localhost:9200/<index name>/_settings 
+
+    # 删除索引
+    curl -XDELETE http://127.0.0.1:9200/<index>
+
+    ====== 群集/节点
     # List all nodes
     curl http://localhost:9200/_cat/nodes?v
     # 查看群集设置
@@ -775,8 +794,6 @@
     # 查看heap
     curl 'http://localhost:9200/_cat/nodes?h=heap*&v'
     
-    # 搜索index中的文档
-    /index-name/_search?pretty=true&q=*:*&size=10       # 搜索10个文档
     
     # 群集状态
     curl http://127.0.0.1:9200/_cluster/health?pretty
@@ -790,9 +807,10 @@
     # 查看count
     GET /_count
 
-    # 删除索引
-    curl -XDELETE http://127.0.0.1:9200/<index>
 
     curl -X DELETE "http://localhost:9200/myapp-*"
     # 未分配分片原因（关键诊断）
-    GET /_cluster/allocation/explain?pretty
+    curl http://localhost:9200/_cluster/allocation/explain?pretty
+
+
+
