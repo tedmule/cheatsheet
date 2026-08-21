@@ -12,8 +12,6 @@
 
 
 
-
-
 ≡≡≡≡≡≡ sed
     # delete space in the beginning of text
     echo "    hello world " | sed 's/^[ \t]*//'
@@ -811,6 +809,19 @@
     curl -X DELETE "http://localhost:9200/myapp-*"
     # 未分配分片原因（关键诊断）
     curl http://localhost:9200/_cluster/allocation/explain?pretty
+
+
+
+
+
+≡≡≡≡≡≡ mq/rocketmq
+    ====== rocketmq
+    # list topic
+    mqadmin topicList -n localhost:9876
+
+    # topic status
+    mqadmin topicStatus -n localhost:9876 -t <topic name>
+
 
 
 
