@@ -260,6 +260,12 @@
     ====== node
     kubectl drain <node-name> --ignore-daemonsets --delete-emptydir-data
 
+    ====== kube-proxy
+        # check proxy mode
+        kubectl get configmap kube-proxy -n kube-system -o yaml | grep -A5 -E 'mode:|proxyMode'
+        # or login node
+        curl -s localhost:10249/proxyMode
+
 
 
 
