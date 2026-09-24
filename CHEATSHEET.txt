@@ -11,6 +11,16 @@
 
 
 
+≡≡≡≡≡≡ wget
+    # mirror static site
+    wget --mirror --convert-links --adjust-extension --page-requisites --no-parent https://www.example.com/
+    # or
+    wget -m -k -E -p https://www.example.com/
+
+
+
+
+
 
 ≡≡≡≡≡≡ sed
     # delete space in the beginning of text
@@ -123,6 +133,10 @@
 
     === curl download to support retry
     curl -L -O --retry 5 --retry-max-time 0 -C - -x http://<proxy ip>:<proxy port> <URL>
+
+    === rest api
+    # generate timestamp
+    date +%s%N
 
 
 
@@ -806,7 +820,7 @@
     # 查看分片分配
     curl http://localhost:9200/_cat/allocation?v
     curl http://localhost:9200/_cat/shards?v
-    curl "http://127.0.0.1:9200/_cat/shards?v&s=state:desc"
+    curl "http://localhost:9200/_cat/shards?v&s=state:desc"
     
     # 查看count
     GET /_count
